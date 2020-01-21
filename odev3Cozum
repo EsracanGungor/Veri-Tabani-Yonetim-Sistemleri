@@ -1,0 +1,105 @@
+1.soru: Bir besteci besteci tablosundan silindiğinde o bestecinin bestelediği şarkıları sarki tablosundan silen trigger'ı yazınız. (sarki tablosunda foreign key kullanmayacağız düşüneceğiz.)
+CREATE OR REPLACE FUNCTION besteciDelete()
+RETURNS TRIGGER AS
+$$	
+BEGIN    
+	DELETE FROM sarki s 
+           WHERE s. bestecino=OLD.bestecino;   
+	RETURN OLD;
+END;
+$$ 
+LANGUAGE plpgsql;
+
+CREATE TRIGGER t_besteciDelete BEFORE DELETE ON besteci FOR EACH ROW
+EXECUTE PROCEDURE besteciDelete();
+2.soru: Şarkıcının söylediği şarkıların sayısını (soyledigiSarkiSayisi) gerektiğinde güncelleyen triggerları yazınız.
+CREATE OR REPLACE FUNCTION updateSarkiSayisi() 
+RETURNS TRIGGER AS $$
+DECLARE sayi INTEGER;
+BEGIN
+IF (TG_OP != 'DELETE') THEN
+      SELECT COUNT(s.sarkicino) 
+INTO sayi  
+FROM soyler s
+WHERE s.sarkicino=NEW.sarkicino;    
+          UPDATE sarkici 
+SET soyledigiSarkiSayisi=  sayi 
+WHERE sarkicino = NEW.sarkicino;
+END IF;
+	IF(TG_OP != 'INSERT') THEN 
+	    SELECT COUNT(s.sarkicino) 
+INTO sayi
+FROM soyler s
+WHERE s.sakicino =OLD.sarkicino;    
+    	    UPDATE sarkici  
+SET soyledigiSarkiSayisi =  sayi  
+WHERE s.sakicino =OLD.sarkicino;
+ END IF;
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER t_updateSarkiSayisi AFTER INSERT OR DELETE OR UPDATE ON soyler FOR EACH ROW
+EXECUTE PROCEDURE updateSarkiSayisi ();
+
+3.soru: Sarkıno'sı verilen bir şarkıyı söyleyen şarkıcıların kayıtlarını geri döndüren bir stored function yazınız. Bu function'ı bir SELECT komutunda kullanınız.
+CREATE OR REPLACE FUNCTION f_sarkiciBilgileri(int) 
+RETURNS SETOF Sarkici AS 
+$$
+BEGIN
+  RETURN QUERY SELECT s.*
+FROM sarkici s, soyler a
+WHERE s.sarkicino =a.sarkicino AND a.sarkino= $1;
+  END;
+$$ LANGUAGE plpgsql;
+
+SELECT * FROM f_sarkiciBilgileri(2);
+odev3=# SELECT * FROM f_sarkiciBilgileri(2);
+ sarkicino |   sarkiciadi   | soyledigisarkisayisi
+-----------+----------------+----------------------
+         1 | Orhan Gencebay |                  152
+         2 | Muzeyyen Senar |                  170
+         3 | Atakan Celik   |                    3
+(3 sat²r)
+4.soru: Bestecino'su verilen bir bestecinin bestelediği şarkılardan daha fazla beste yapmış olan bestecilerin sayısını  geri döndüren bir stored function yazınız. Bu function'ı bir SELECT komutunda kullanınız.
+CREATE OR REPLACE FUNCTION f_besteciBilgileri(bno integer) 
+RETURNS integer AS $$
+declare besteci_count  integer;
+declare besteci_count1  integer;
+BEGIN
+     SELECT COUNT(s.sarkino) INTO besteci_count
+FROM Besteci b,sarki s
+WHERE b.bestecino=s.bestecino AND b.bestecino=bno;
+     
+     SELECT COUNT(s.sarkino) INTO besteci_count1
+FROM besteci b,sarki s
+WHERE b.bestecino=s.bestecino 
+GROUP BY b.bestecino
+HAVING COUNT(s.sarkino)>besteci_count;
+
+RETURN besteci_count1;
+END;
+$$ LANGUAGE plpgsql;
+odev3=# SELECT * FROM f_besteciBilgileri(2);
+ f_bestecibilgileri
+--------------------
+(1 sat²r)
+odev3=# SELECT * FROM f_besteciBilgileri(1);
+ f_bestecibilgileri
+--------------------
+                         2
+(1 sat²r)
+5.soru: Hiç şarkı bestelememiş olan besteciler için rastgele 1 adet şarkıyı sarki tablosuna ekleyen stored procedure’ı yazınız
+
+CREATE OR REPLACE PROCEDURE sarki_ekle() AS $$
+DECLARE besteci_no INTEGER;
+BEGIN
+SELECT b.bestecino INTO besteci_no
+FROM sarki s,besteci b
+WHERE b.bestecino NOT IN(SELECT s.bestecino
+FROM sarki s)
+GROUP BY b.bestecino;
+IF (besteci_no!=0) THEN
+INSERT INTO sarki(sarkino, sarkiadi, turu, bestecino, sozyazarino) VALUES (5, 'Beni Unutma', 'aaa', besteci_no,2);
+END IF;
+END;
+$$ LANGUAGE plpgsql;
