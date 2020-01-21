@@ -1,0 +1,37 @@
+VERİTABANI ŞEMASI
+Sarki (sarkino, adi, turu, uzunluk, bestecino, yazarno)
+Sarkici (sarkicino, adi, soyadi, turu)
+İcra (sarkicino, sarkino)
+Besteci (bestecino, adi, soyadi)
+Sozyazari (yazarno, adi, soyadi)
+
+AŞAĞIDAKİ SORGULARI SQL İLE CEVAPLAYINIZ.
+SQL sorularını ise MySQL veya PostgreSQL ile yapınız. Veritabanını yukarıdaki şemaya göre kendiniz
+oluşturunuz. Veri tiplerini uygun şekilde INTIGER/NUMERIC veya VARCHAR/CHAR olarak belirleyiniz.
+SORGULAR
+1. Sarkı kayıtlarını (sarki tablosundaki tüm alanları) şarkı adına göre artan sırada listeleyiniz.
+2. ‘Orhan’ ‘Gencebay’ adlı bestecinin bestelediği şarkıları icra eden şarkıcıların sarkicino, ad, ve
+soyadlarını listeleyiniz. (Bu sorguda IN/SOME/ALL/EXISTS kullanmayınız)
+3. ‘Sanat’ turunde şarkıların söz yazarlığını yapmış veya ‘Müzeyyen’ ‘Senar’ adlı şarkıcının icra ettiği
+(söylediği bazı/herhangi/en-az-bir) sarkıların söz yazarlığını yapmış söz yazarlarının ad ve
+soyadlarını listeleyiniz. (UNION kullanınız. Bu sorguda IN/SOME/ALL/EXISTS kullanmayınız)
+4. 180 saniyeden daha uzun bir şarkı (yada şarkılar) bestelemiş fakat ‘Halk’ türünde şarkı
+bestelememiş bestecilerin ad ve soyadlarını listeleyiniz. (MINUS/EXCEPT ile yapılacak.
+Veritabanınızda MINUS/EXCEPT çalışmazsa NOT EXISTS ile yapabilirsiniz. (Bu sorguda IN/SOME/ALL
+kullanmayınız)
+5. Tüm şarkıları icra eden şarkıcıların ad ve soyadlarını veriniz (Bölme işlemi- Bu sorguda IN/SOME/ALL
+kullanmayınız)
+6. ‘Orhan’ ’Gencebay’ icra ettiği şarkılardan herhangi birini icra eden şarkıcıların ad ve soyadlarını
+listeleyiniz. (Bu soru IN veya =SOME kullanılarak alt sorguyla yazılacak)
+7. Uzunluğu ‘Ümit’,’Mutlu’nun bestelediği şarkılardan hic birine eşit olmayan şarkıların adlarını
+listeleyiniz (Bu soru NOT IN veya <>ALL kullanılarak alt sorguyla yazılacak)
+8. ‘Halk’ müziğü turunde şarkı icra etmiş olan şarkıcıların kayıtlarını EXISTS kullanarak yazınız.
+9. Her şarkıcı için şarkıcıno, adı, soyadı, icra ettiği şarkıların toplam uzunluğu, ortalama uzunluğu, en
+uzunu, en kısası, şarkı sayılarını listeleyiniz. (GROUP BY kullanılacak. Önce şarkıcı bazında GROUP BY
+yapılacak icra ettiği şarkıların toplam uzunluğu, ortalama uzunluğu, en uzunu, en kısası, şarkı
+sayıları bulunacak, sonra şarkıcı adı ve soyadına erişmek için bu adımdaki sonuçlar şarkıcı
+tablosuyla natural join edilecek)
+10. Birden çok sayıda şarkı besteleyen besteciler için bestecino, adi, soyadı, bestelediği şarkı sayısını
+listeleyiniz. (GROUP BY ve HAVING kullanılacak. Önce besteci bazında GROUP BY yapılacak
+bestelediği şarkı sayısı bulunacak, sonra besteci adı ve soyadına erişmek için bu adımdaki sonuçlar
+besteci tablosuyla natural join edilecek)
