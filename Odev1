@@ -1,0 +1,47 @@
+ÖDEV 1: Veritabanı-SQL
+
+Teslim şekli: Aşağıdaki soruları MySQL veritabanında çalıştırarak çıktılarını bir düz metin (TXT) dosyasına veya bir MS World (DOCX) dosyasına saklayıp, o dosyayı yazdırarak çıktısını derste teslim ednizi. Derse yetiştiremeyenler ders günü geceyarısına kadar ödevi ders asistanına veya hocasına teslim edebilir. Eğer odamızda değilsek ödevinizi kapının altından atabilirsiniz.
+
+Veritabanı Şeması
+
+·         Musteri(mno, madi, msoyadi, mtelefon) // müşterinin no’su adi, soyadı, telefonu
+
+·         Yemek(yno, yadi, ykalori, ybirimFiyati, yturu) // yemekno’su, adı, kalorisi, satış birim fiyatı, türü
+
+·         Malzeme(zno, zadi, ztipi, zbirimFiyati) // malzemenin no’su, adı, birim satınalma fiyatı, tipi
+
+·         Siparis(mno, yno, tarihsaat) // hangi müşterinin hangi yemeği hangi tarih-saatte sipariş ettiği
+
+·         Kullan(yno, zno, miktar) // hangi yemekte hangi malzemenin hangi miktarda kullanıldığı
+
+SORULAR: (Aşağıdaki soruları hem MySQL ile hem de Relational Algebra ile yazınız)
+
+Bir restorandaki müşteriler, siparişler, yemekler, yemeklerde kullanılan malzemeler aşağıdaki gibi bir veritabanında tutulmaktadır. Bu veri tabanı şemasını kullanarak aşağıdaki sorguları istenilen dilde ifade ediniz. [İpucu: Restoran ve Okul veritabanı arasındaki benzerlik: Müşteriler öğrencilere, yemekler derslere, siparişler ders almaya, malzeme hocalara, kullanma ise ders vermeye benzemektedir.]
+
+1.       ‘Kereviz’ malzemesinin kullanıldığı yemeği sipariş eden müşterilerin kayıtlarını (müşteri tablosundaki tüm sütunları) listeleyiniz. [İpucu: Malzeme adı ‘Kereviz’ sadece malzeme tablosunda geçtği için malzeme tablosu kullanılacak. İlgili malzemenin hangi yemekte kullanıldığı bilgisi Kullan tablosunda olduğu için kullan tablosu kullanılacak. Bu tablodan yemeklerin yno’su bulunacak. Bu yemekleri hangi müşterilerin sipariş ettiği sipariş tablosundan bulunacak, Sipariş tablosundan siparişi verem müşterilerin mno’ları bulunacak. Müşteri kayıları müşteri tablosunda olduğundan musteri tablosu da kullanılacak. Tablolar aynı isimdeki alanlar üzerinden natural join edilecek]
+
+2.       ‘Kuru fasulye’ yemeğini sipariş etmeyenlerin müşterilerin sipariş ettiği yemeklerinde  kullanılan malzemelerin kayıtlarını (malzeme tablosundaki tüm sütunları) listeleyiniz [İpucu: Yemek tablosundan Kuru fasulye’nin yno’su bulunur. Sipariş tablosundan o yemeği hangi müşterilerin sipariş ettiği bulunur. Tüm üşterilerin mno’larından bu müşteriler çıkarılır (minus/except/difference). Geri kalan müşterilerin mno’su kullanılarak sipariş tablosu üzerinden bu kişilerin sipariş ettiği yemeklerin yno’su bulunur. Kullan tablosu üzerinden bu yemeklerin mno’ları bulunur. Buradan malzeme tablosuna gidilerek malzeme tablosundaki kayıtlar listelenir. 2 adımlı bir soru… tek adımda yapılamaz.]
+
+3.       Hem ‘Ali’,’KURT’ hemde ‘Ayşe’, ‘KURT’ tarafından şipariş edilmiş yemeklerde kullanılan malzemelerin (tekrarsız/distinct) sayılarını ve toplam miktarını listeleyiniz.
+
+4.       Tüm malzemelerin kullanıldığı yemeklerin adlarını listeleyiniz.
+
+5.       Her yemek için yemek numarası, yemekte kullanılan farklı malzeme sayısı, ve yemeğin üretiminde kar/zarar durumunu listeleyiniz.
+
+Kar/zarar durumu: Her yemeğin bir satış birim fiyatı (ybirimFiyati) ve yemekte kullanılan malzemelerin satın alış birim fiyatı (zbirimFiyati) yani maliyeti bulunmaktadır. Her yemek hangi malzemeden ne kadar kullanıldığı (miktar) Kullan tablosundaki kayıtlarda verilmiştir.  Örneğin: ‘Kuru fasulye’nin birim satış fiyatı 5 TL olsun. Kuru fasulyede kullanılan malzemelerin miktar ve birim satınalma fiyatları
+
+        Fasulye, miktar: 0.2 kg, zbirimFiyati: 5 TL
+
+        Soğan, miktar: 0.1 kg, zbirimFiyati: 1 TL
+
+        Su, miktar: 0.5 kg, zbirimFiyati: 0 TL
+
+        Tuz, miktar: 0.01 kg, zbirimFiyati: 0 TL
+
+olsun. Bu durumda ‘Kuru fasulye’ yemeği için
+
+kar/zarar = 20 – (5 x 0.1 + 0.1 x 1 + 0.5 x 0 + 0.01 x 0) = 5 – 0.6 = 4.4 TL
+
+olur. Yani “kar/zarar = satış fiyat- malzemlerin maliyeti” olarak hesaplanır
+
+ 
