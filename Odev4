@@ -1,0 +1,56 @@
+JDBC (5 puan)
+CREATE TABLE Person(
+ID int ,
+name varchar(30), 
+gender varchar(30), 
+fatherID int ,
+motherID int ,
+spouseID int,
+primary key(ID) 
+);
+INSERT INTO Person(ID, name, gender, fatherID, motherID, spouseID) VALUES (3, 'Zeynep',’Kadin’,1,2,null);
+INSERT INTO Person(ID, name, gender, fatherID, motherID, spouseID) VALUES (2, 'Ayse',’Kadin’,null,null,2);
+INSERT INTO Person(ID, name, gender, fatherID, motherID, spouseID) VALUES (4, ' Mustafa',’Erkek’,1,2,null);
+INSERT INTO Person(ID, name, gender, fatherID, motherID, spouseID) VALUES (5, 'Cafer',’Erkek’,3,9,7);
+INSERT INTO Person(ID, name, gender, fatherID, motherID, spouseID) VALUES (6, 'Mithat',’Erkek’,3,8,null);
+INSERT INTO Person(ID, name, gender, fatherID, motherID, spouseID) VALUES (7, 'Nermin',’Erkek’,1,2,5);
+INSERT INTO Person(ID, name, gender, fatherID, motherID, spouseID) VALUES (8, 'Elif',’Kadin’,5,7,6);
+Person(ID, name, gender, fatherID, motherID, spouseID)
+SELECT * FROM Person a,Person b, (SELECT t.ID FROM Person a,Person b WHERE a.fatherID=b.fatherID AND a.motherID=b.motherID AND a.ID=8)t WHERE a.ID=8 AND a.ID=b.motherID AND t.ID=b.motherID;
+ID	name	gender	fatherID	motherID	spouseID
+1	Ali	Erkek	Null	Null	1
+2	Ayşe	Kadın	Null	Null	2
+3	Zeynep	Kadın	1	2	Null
+4	Mustafa	Erkek	1	2	
+5	Cafer	Erkek	3	9	7
+6	Mithat	Erkek	3	8	Null
+7	Nermin	Erkek	1	2	5
+8	Elif	Kadın	5	7	6
+
+Verilerin PostgreSQL’deki yukarıdaki gibi bir tabloda saklandığını farzederek Java ile JDBC kutuphanesi kullanarak aşağıdaki şekilde bir console programı yazınız. Programın ana menüsünde 4 adet sorgulama olacaktır. Sorgulamalar kişilerin ID değerleri ile yapılacaktır. IDsi verilen kişinin kardeşleri kuzenleri, soy ağacı (kişinin annesi, babası, anne ve babasının anne ve babası, vb…), soyundan gelenler (çocukları, cocuklarının çocukları, vb…) listelenecektir. Aşağıdaki programın işleyişi örneklendirilmiştir. Menuyu println komutlarıyla yazdırabilirsiniz. Java programının kaynak kodunu bastırarak vermeniz yeterlidir. Bu programı çalıştırmak için PostgreSQL için Java JDBC APIyi indirip kaynak kodunuzla bereber derlemeniz gerekmektedir. https://www.tutorialspoint.com/postgresql/postgresql_java.htm adresindeki tutorial’i ve AdvancedSQL sunumundaki JDBC slidelarını kullanabilirsiniz.
+Menu
+0: çıkış
+1: kardeş sorgula
+2: kuzen sorgula
+3: soy ağacı sorgula
+4: soyundan gelenleri sorgula
+Seçenek ? 1
+ID? 3
+ID:3, Ad:Zeynep, Kardeşleri:
+  Mustafa
+0: çıkış
+1: kardeş sorgula
+2: kuzen sorgula
+3: soy ağacı sorgula
+4: soyundan gelenleri sorgula
+Seçenek ? 2
+ID? 9
+ID:9, Ad:Kemal, Kuzenleri:
+  Metin
+  Nurdan
+…
+
+SELECT b.name FROM Person a,Person b WHERE a.fatherID=b.fatherID AND a.motherID=b.motherID AND a.ID=3;
+SELECT * FROM Person a,Person b WHERE a.fatherID=b.fatherID AND a.motherID=b.motherID AND a.ID=a
+MongoDB (5 puan)
+Yukadarıda PostgreSQL-Java ile yapılan işi MongoDB-Java ile yeniden yapınız. Person tablosunda saklanan bilgiler MongoDBde bir veritabanı içinde person adlı bir collection’da saklanacaktır. Bu soruyu çözmek için https://www.tutorialspoint.com/mongodb/mongodb_java.htm adresindeki örnekleri kullanabilirsiniz. Bu programı çalıştırmak için MongoDB JDBC driver’ı indirip kaynak kodunuzla beraber derlemeniz gerekmektedir. 
