@@ -1,0 +1,13 @@
+Triggers & Stored Procedues
+sarki(sarkino, sarkiadi, turu, bestecino, sozyazarino)
+soyler(sarkino, sarkicino)
+sarkici(sarkicino, sarkiciadi, soyledigiSarkiSayisi)
+sozyazari(sozyazarino, sozyazariadi)
+besteci(bestecino, besteciadi)
+
+Yukarıdaki veritabanını PostgreSQL veritabanında oluşturup aşağıdaki trigger ve stored function'ları yazınız.
+1.	Bir besteci besteci tablosundan silindiğinde o bestecinin bestelediği şarkıları sarki tablosundan silen trigger'ı yazınız. (sarki tablosunda foreign key kullanmayacağız düşüneceğiz.)
+2.	Şarkıcının söylediği şarkıların sayısını (soyledigiSarkiSayisi) gerektiğinde güncelleyen triggerları yazınız.
+3.	Sarkıno'sı verilen bir şarkıyı söyleyen şarkıcıların kayıtlarını geri döndüren bir stored function yazınız. Bu function'ı bir SELECT komutunda kullanınız.
+4.	Bestecino'su verilen bir bestecinin bestelediği şarkılardan daha fazla beste yapmış olan bestecilerin sayısını  geri döndüren bir stored function yazınız. Bu function'ı bir SELECT komutunda kullanınız.
+5.	Hiç şarkı bestelememiş olan besteciler için rastgele 1 adet şarkıyı sarki tablosuna ekleyen stored procedure’ı yazınız
