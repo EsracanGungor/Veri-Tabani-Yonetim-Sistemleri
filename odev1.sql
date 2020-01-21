@@ -1,8 +1,3 @@
-/*Ödev no:1
-Ad Soyad:Esracan Güngör
-No:1306170067
-Ders adı,kodu:VERİ TABANI YÖNETİM SİSTEMLERİ,BIMU3064*/
-
 MariaDB [(none)]> CREATE DATABASE restoran ;
 Query OK, 1 row affected (0.002 sec)
 MariaDB [(none)]> USE restoran ;
